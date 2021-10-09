@@ -1,11 +1,15 @@
+import time # import他人模組來加一些額外功能
+import progressbar
+
 data = []
 count = 0
+bar = progressbar.ProgressBar(max_value=1000000) # ProgressBar為一個物件, 因為function第一個字要小寫
+
 with open('reviews.txt', 'r') as f:
     for line in f:
         data.append(line)
         count += 1
-        if count % 1000 == 0: #print 跑很慢, 故讓他每1000筆顯示一次, %代表某數除以一個數的餘數
-            print(len(data))
+        bar.update(count) # update為ProgressBar這個物件的專屬功能
 print('檔案讀取完了, 總共有', len(data), '筆資料')
 
 
@@ -44,6 +48,7 @@ print('一共有', len(good), '筆留言提到good')
 
 # 文字計數
 
+start_time = time.time()
 wc = {} # 建立字典word_count
 for d in data: # d(每一筆留言是個字串); data(清單)
     words = d.split() # 把每個留言d中的每個字, 用空格分開並製作成words清單, 預設就是用空格分割, 可避免把空格勿存為words清單中的字串
@@ -56,7 +61,8 @@ for d in data: # d(每一筆留言是個字串); data(清單)
 for word in wc: # 此處的word字串代表字典裡的每1個key
     if wc[word] > 1000000:
         print(word, wc[word]) # (印出key, 查找次數(value))
-
+end_time = time.time()
+print('花了', end_time - start_time, 'seconds')
 print(len(wc)) # 印出wc字典中的每個key
 print(wc['Allen'])
 
